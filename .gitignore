@@ -12,6 +12,11 @@ data/processed/*.parquet
 artifacts/*.joblib
 artifacts/*.npz
 
+# Frontend build output and dependencies. Vercel runs `npm install` and
+# `npm run build` itself, so neither belongs in the repo.
+frontend/node_modules/
+frontend/dist/
+
 # Editors
 .vscode/
 .idea/
