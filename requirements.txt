@@ -1,0 +1,8 @@
+# Pinned to what this project was actually built and verified against.
+# Python 3.11.
+
+pandas==3.0.5
+numpy==2.4.6
+pyarrow==25.0.0          # parquet, used for every cached file
+scikit-learn==1.9.0      # logistic regression, matching, cross-fitting folds
+xgboost==3.2.0           # the two outcome models in the T-learner

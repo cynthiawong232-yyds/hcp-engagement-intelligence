@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.pytest_cache/
+
+# Data. Raw CMS files live outside the repo entirely (C:/data/hcp-nbe) because
+# the sources are 3-9 GB per year. The processed panel is rebuildable from
+# `python -m hei.data` then `python -m hei.panel`, so it is not committed.
+data/processed/*.parquet
+artifacts/*.joblib
+artifacts/*.npz
+
+# Editors
+.vscode/
+.idea/
+.DS_Store
