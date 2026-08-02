@@ -12,6 +12,11 @@ data/processed/*.parquet
 artifacts/*.joblib
 artifacts/*.npz
 
+# The doctor-level workbook. Pseudonymised, but it is still per-physician
+# data derived from real named prescribers, and this repo is public. The
+# script that builds it is committed; its output is not.
+artifacts/*.xlsx
+
 # Frontend build output and dependencies. Vercel runs `npm install` and
 # `npm run build` itself, so neither belongs in the repo.
 frontend/node_modules/

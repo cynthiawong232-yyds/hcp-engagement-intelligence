@@ -116,7 +116,7 @@ def build_modelling_sample(panel: pd.DataFrame):
     return X, t, y, last_pre, post
 
 
-def cross_fit(X, t, y, n_splits=5):
+def cross_fit(X, t, y, n_splits=5, seed=SEED):
     """Predict both branches for every doctor, always OUT OF SAMPLE.
 
     THIS IS NOT OPTIONAL, and getting it wrong is the classic T-learner bug.
@@ -136,14 +136,20 @@ def cross_fit(X, t, y, n_splits=5):
     """
     from sklearn.model_selection import StratifiedKFold
 
+    # `seed` is a parameter rather than the module constant so hei.export can
+    # rerun this under several seeds. If the per-doctor scores were measuring
+    # a real property of each doctor, changing the seed would barely move
+    # them. It moves them a lot, which is itself part of the evidence.
+    params = {**XGB_PARAMS, "random_state": seed}
+
     pred_a = np.zeros(len(y))
     pred_b = np.zeros(len(y))
-    skf = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=SEED)
+    skf = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=seed)
     for train_idx, test_idx in skf.split(X, t):
         tr_t = train_idx[t[train_idx] == 1]
         tr_c = train_idx[t[train_idx] == 0]
-        a = XGBRegressor(**XGB_PARAMS).fit(X[tr_t], y[tr_t])
-        b = XGBRegressor(**XGB_PARAMS).fit(X[tr_c], y[tr_c])
+        a = XGBRegressor(**params).fit(X[tr_t], y[tr_t])
+        b = XGBRegressor(**params).fit(X[tr_c], y[tr_c])
         pred_a[test_idx] = a.predict(X[test_idx])
         pred_b[test_idx] = b.predict(X[test_idx])
     return pred_a, pred_b
